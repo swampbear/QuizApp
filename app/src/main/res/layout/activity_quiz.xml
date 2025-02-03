@@ -13,9 +13,10 @@
         android:id="@+id/quizTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_slab"
+        android:gravity="center"
         android:text="Quiz page"
-        android:textSize="24sp"
-        android:gravity="center"/>
+        android:textSize="24sp" />
 
     <!-- Feedback Text -->
     <TextView
@@ -37,26 +38,30 @@
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <!-- Answer Buttons -->
+
     <Button
         android:id="@+id/option1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Option 1"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Option 1" />
 
     <Button
         android:id="@+id/option2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Option 2"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Option 2" />
 
     <Button
         android:id="@+id/option3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Option 3"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Option 3" />
 
 
 
@@ -65,8 +70,9 @@
         android:id="@+id/scoreText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Score: 0/0"
-        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_slab"
         android:gravity="center"
-        android:layout_marginTop="16dp"/>
+        android:text="Score: 0/0"
+        android:textSize="16sp" />
 </LinearLayout>
