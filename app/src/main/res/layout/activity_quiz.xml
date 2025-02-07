@@ -75,4 +75,16 @@
         android:gravity="center"
         android:text="Score: 0/0"
         android:textSize="16sp" />
+
+
+    <!-- End quiz button-->
+    <Button
+        android:id="@+id/end_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginTop="80dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="End Quiz" />
+
 </LinearLayout>

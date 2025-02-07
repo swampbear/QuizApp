@@ -23,7 +23,7 @@ public class QuizActivity extends AppCompatActivity {
     private ArrayList<GalleryItem> galleryItems;
 
     private ImageView imageView;
-    private Button option1, option2, option3;
+    private Button option1, option2, option3, endQuiz;
     private TextView feedbackText, scoreText;
 
     private GalleryItem currentItem;
@@ -43,6 +43,7 @@ public class QuizActivity extends AppCompatActivity {
         option1 = findViewById(R.id.option1);
         option2 = findViewById(R.id.option2);
         option3 = findViewById(R.id.option3);
+        endQuiz = findViewById(R.id.end_button);
         feedbackText = findViewById(R.id.feedbackText);
         scoreText = findViewById(R.id.scoreText);
         if (galleryItems.size() < 3) {
@@ -52,6 +53,9 @@ public class QuizActivity extends AppCompatActivity {
 
 
         loadNewQuestion();
+        endQuiz.setOnClickListener(view -> {
+            finish();
+        });
 
     }
 
