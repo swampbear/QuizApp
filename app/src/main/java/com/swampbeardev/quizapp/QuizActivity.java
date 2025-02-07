@@ -37,8 +37,10 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+
         app = (QuizApplication) getApplication();
         galleryItems = app.getGalleryItems();
+
         imageView = findViewById(R.id.imageView);
         option1 = findViewById(R.id.option1);
         option2 = findViewById(R.id.option2);
@@ -46,6 +48,7 @@ public class QuizActivity extends AppCompatActivity {
         endQuiz = findViewById(R.id.end_button);
         feedbackText = findViewById(R.id.feedbackText);
         scoreText = findViewById(R.id.scoreText);
+
         if (galleryItems.size() < 3) {
             displayToFewEntries();
             return;
@@ -53,9 +56,8 @@ public class QuizActivity extends AppCompatActivity {
 
 
         loadNewQuestion();
-        endQuiz.setOnClickListener(view -> {
-            finish();
-        });
+        endQuiz.setOnClickListener(view -> finish());
+
 
     }
 
