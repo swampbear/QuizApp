@@ -1,90 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
-    android:orientation="vertical"
-    android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <!-- Quiz title -->
-    <TextView
-        android:id="@+id/quizTitle"
+    <LinearLayout
+        android:id="@+id/main"
+        android:orientation="vertical"
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_slab"
-        android:gravity="center"
-        android:text="Quiz page"
-        android:textSize="24sp" />
+        android:layout_height="wrap_content">
 
-    <!-- Feedback Text -->
-    <TextView
-        android:id="@+id/feedbackText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text=""
-        android:textColor="#0B0B0B"
-        android:textSize="18sp" />
+        <!-- Quiz title -->
+        <TextView
+            android:id="@+id/quizTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_slab"
+            android:gravity="center"
+            android:text="Quiz page"
+            android:textSize="24sp" />
 
-    <!-- Image area -->
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="282dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        <!-- Feedback Text -->
+        <TextView
+            android:id="@+id/feedbackText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#0B0B0B"
+            android:textSize="18sp" />
 
-    <!-- Answer Buttons -->
+        <!-- Image area -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="282dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
 
-    <Button
-        android:id="@+id/option1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/roboto_slab"
-        android:text="Option 1" />
+        <!-- Answer Buttons -->
 
-    <Button
-        android:id="@+id/option2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/roboto_slab"
-        android:text="Option 2" />
+        <Button
+            android:id="@+id/option1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_slab"
+            android:text="Option 1" />
 
-    <Button
-        android:id="@+id/option3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/roboto_slab"
-        android:text="Option 3" />
+        <Button
+            android:id="@+id/option2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_slab"
+            android:text="Option 2" />
 
-
-
-    <!-- Score Text -->
-    <TextView
-        android:id="@+id/scoreText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/roboto_slab"
-        android:gravity="center"
-        android:text="Score: 0/0"
-        android:textSize="16sp" />
+        <Button
+            android:id="@+id/option3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_slab"
+            android:text="Option 3" />
 
 
-    <!-- End quiz button-->
-    <Button
-        android:id="@+id/end_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginTop="80dp"
-        android:fontFamily="@font/roboto_slab"
-        android:text="End Quiz" />
 
-</LinearLayout>
+        <!-- Score Text -->
+        <TextView
+            android:id="@+id/scoreText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_slab"
+            android:gravity="center"
+            android:text="Score: 0/0"
+            android:textSize="16sp" />
+
+
+        <!-- End quiz button-->
+        <Button
+            android:id="@+id/end_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginTop="80dp"
+            android:fontFamily="@font/roboto_slab"
+            android:text="End Quiz" />
+
+    </LinearLayout>
+</ScrollView>
