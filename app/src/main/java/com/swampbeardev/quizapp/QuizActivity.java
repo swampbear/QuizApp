@@ -131,9 +131,6 @@ public class QuizActivity extends AppCompatActivity {
         option2.setText(options.get(1));
         option3.setText(options.get(2));
 
-//        questionNumber++;
-        viewModel.incrementQuestionNumber();
-
         setOptionClickListener(option1);
         setOptionClickListener(option2);
         setOptionClickListener(option3);
@@ -172,7 +169,7 @@ public class QuizActivity extends AppCompatActivity {
             feedbackText.setText("Feil.. Rett svar var: " + viewModel.getCorrectAnswer().getValue());
             feedbackText.setBackgroundColor(ContextCompat.getColor(this, R.color.incorrectBackground));
         }
-
+        viewModel.incrementQuestionNumber();
         updateScoreText();
         disableButtons();
 
