@@ -1,5 +1,5 @@
 # QuizApp153
-Welcome to the Quiz & Gallery Android Application! This project is developed as part of a mandatory task in DAT153 at HVL. The application is designed to showcase essential Android development concepts by integrating interactive quiz functionality with a dynamic gallery management system.
+Welcome to to our android Quiz application! This project is developed as part of a mandatory task in DAT153 at HVL. The application is designed to showcase essential Android development concepts by integrating interactive quiz functionality with a dynamic gallery management system.
 
 The app use XML to render the user interface and utilizes Java for handling the application logic.
 ## Key Features
