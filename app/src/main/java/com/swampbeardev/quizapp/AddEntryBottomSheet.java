@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -25,11 +26,7 @@ public class AddEntryBottomSheet extends BottomSheetDialogFragment {
 
     private Uri selectedImageUri;
     private ActivityResultLauncher<String> getContentLauncher;
-    private GalleryAdapter adapter;
-
-    public AddEntryBottomSheet(GalleryAdapter adapter) {
-        this.adapter = adapter;
-    }
+    // Remove the adapter field from here
 
     @Nullable
     @Override
@@ -37,6 +34,7 @@ public class AddEntryBottomSheet extends BottomSheetDialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_layout, null);
         dialog.setContentView(view);
+
         EditText nameInput = view.findViewById(R.id.nameInput);
         ImageView selectedImage = view.findViewById(R.id.selectedImage);
         Button uploadImageButton = view.findViewById(R.id.uploadImageButton);
@@ -46,21 +44,20 @@ public class AddEntryBottomSheet extends BottomSheetDialogFragment {
                 new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri != null) {
-                        final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                        // Use read permission flag and persist permission if needed.
+                        int flags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
                         try {
-                            getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                            requireActivity().getContentResolver().takePersistableUriPermission(uri, flags);
                         } catch (SecurityException e) {
                             e.printStackTrace();
-                            Toast.makeText(getContext(), "Failed to load image", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Failed to persist URI permission", Toast.LENGTH_SHORT).show();
                         }
-
                         selectedImageUri = uri;
                         selectedImage.setImageURI(uri);
                         selectedImage.setVisibility(View.VISIBLE);
                     }
                 }
         );
-
 
         uploadImageButton.setOnClickListener(v -> {
             // Launch the gallery to select an image
@@ -70,15 +67,14 @@ public class AddEntryBottomSheet extends BottomSheetDialogFragment {
         saveButton.setOnClickListener(v -> {
             String name = nameInput.getText().toString();
             if (!name.isEmpty() && selectedImageUri != null) {
-                Uri imageUri = selectedImageUri;
-                if (adapter != null) {
-                    GalleryItem newItem = new GalleryItem(selectedImageUri, name);
-                    adapter.addEntry(newItem);
-                } else {
-                    // Handle the case where galleryAdapter is null, e.g., log an error
-                    Log.e("AddEntryBottomSheet", "galleryAdapter is null!");
-                }
-                Toast.makeText(getContext(), "Entry added:" + name + " " + imageUri, Toast.LENGTH_SHORT).show();
+                // Create the new GalleryItem
+                GalleryItem newItem = new GalleryItem(selectedImageUri, name);
+
+                // Get the shared ViewModel from the hosting Activity and insert the item
+                GalleryViewModel viewModel = new ViewModelProvider(requireActivity()).get(GalleryViewModel.class);
+                viewModel.insert(newItem);
+
+                Toast.makeText(getContext(), "Entry added: " + name, Toast.LENGTH_SHORT).show();
                 dismiss();
             } else {
                 Toast.makeText(getContext(), "Please enter a name and select an image", Toast.LENGTH_SHORT).show();

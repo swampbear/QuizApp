@@ -55,6 +55,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         Log.d(item.getImageName(), "addEntry: ");
         notifyItemInserted(galleryItems.size() - 1);
     }
+
+    public void setGalleryItems(List<GalleryItem> galleryItems) {
+        this.galleryItems = galleryItems;
+        notifyDataSetChanged();
+    }
+
+    public List<GalleryItem> getGalleryItems() {
+        return galleryItems;
+    }
     /**
      * Removes a gallery item from the adapter.
      *
@@ -98,7 +107,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     @Override
     public int getItemCount() {
-        return galleryItems.size();
+        if (galleryItems == null) {
+            return 0;
+        } else {
+            return galleryItems.size();
+        }
     }
 
     /**
