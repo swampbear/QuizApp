@@ -10,11 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.Observer;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class QuizFragment extends Fragment {
 
@@ -36,11 +41,11 @@ public class QuizFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // Initialize the view model and UI components
         viewModel = new ViewModelProvider(requireActivity()).get(QuizActivityViewModel.class);
-        if (viewModel.getApp() == null) {
-            viewModel.setApp((QuizApplication) requireActivity().getApplication());
+        if (viewModel.getGalleryItems() == null) {
+            viewModel.setApp(requireActivity().getApplication());
         }
 
         imageView = view.findViewById(R.id.imageView);
@@ -51,10 +56,17 @@ public class QuizFragment extends Fragment {
         feedbackText = view.findViewById(R.id.feedbackText);
         scoreText = view.findViewById(R.id.scoreText);
 
-        if (viewModel.getGalleryItems().size() < 3) {
-            displayTooFewEntries();
-            return;
-        }
+        // Observe the LiveData and handle null or empty list
+        viewModel.getGalleryItems().observe(getViewLifecycleOwner(), new Observer<List<GalleryItem>>() {
+            @Override
+            public void onChanged(List<GalleryItem> galleryItems) {
+                if (galleryItems == null || galleryItems.size() < 3) {
+                    displayTooFewEntries();
+                } else {
+                    loadNewQuestion();
+                }
+            }
+        });
 
         viewModel.getCurrentItem().observe(getViewLifecycleOwner(), item -> {
             if (item != null) {
@@ -91,8 +103,14 @@ public class QuizFragment extends Fragment {
         enableButtons();
         feedbackText.setText("");
 
-        int randomIndex = viewModel.getRandom().nextInt(viewModel.getGalleryItems().size());
-        GalleryItem currentItem = viewModel.getGalleryItems().get(randomIndex);
+        List<GalleryItem> galleryItems = viewModel.getGalleryItems().getValue();
+        if (galleryItems == null || galleryItems.isEmpty()) {
+            // Handle the case where galleryItems is null or empty
+            return;
+        }
+
+        int randomIndex = viewModel.getRandom().nextInt(galleryItems.size());
+        GalleryItem currentItem = galleryItems.get(randomIndex);
         viewModel.setCurrentItem(currentItem);
         viewModel.setCorrectAnswer(currentItem.getImageName());
 
@@ -100,7 +118,7 @@ public class QuizFragment extends Fragment {
         options.add(currentItem.getImageName());
 
         while (options.size() < 3) {
-            String option = viewModel.getGalleryItems().get(viewModel.getRandom().nextInt(viewModel.getGalleryItems().size())).getImageName();
+            String option = galleryItems.get(viewModel.getRandom().nextInt(galleryItems.size())).getImageName();
             if (!options.contains(option)) {
                 options.add(option);
             }
@@ -122,7 +140,7 @@ public class QuizFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void evaluateAnswer(String selectedOption) {
-        if (selectedOption.equals(viewModel.getCorrectAnswer().getValue())) {
+        if (Objects.equals(selectedOption, viewModel.getCorrectAnswer().getValue())) {
             feedbackText.setText("Riktig!");
             feedbackText.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.correctBackground));
             viewModel.incrementScore();
