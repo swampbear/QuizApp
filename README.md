@@ -194,8 +194,3 @@ private ArrayList<GalleryItem> galleryItems = new ArrayList<>();
 | **Navigation to Quiz/Gallery**     | ✅ Passed         |
 | **Data Registration (Add/Delete)** | ✅ Passed         |
 | **Quiz Score Updates**             | ✅ Fixed & Passed |
-
-### **Future Improvements**
-
-- Implement **Idling Resources** to avoid using `Thread.sleep()`.
-- Improve **UI synchronization** for better Espresso test reliability.
