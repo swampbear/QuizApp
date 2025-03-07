@@ -84,3 +84,121 @@ flowchart TD
 
 
 ```
+
+# QuizApp - Test Documentation
+
+## Overview
+
+This document provides an overview of the test cases implemented for the **QuizApp** project. Each test case includes:
+
+- **Test Description:** What the test validates.
+- **Expected Result:** The expected behavior.
+- **Implementation:** The class and method responsible for the test.
+- **Test Result:** Pass or fail status.
+- **Failure Analysis & Fixes:** If a test fails, an explanation and proposed fixes.
+
+---
+
+## Test Cases
+
+### **1. Navigation from Main Menu**
+
+#### **Description**
+
+This test ensures that clicking on the **Quiz** or **Gallery** button in the **Main Menu** opens the correct activity.
+
+#### **Expected Result**
+
+1. Clicking **Quiz** button opens **QuizActivity**.
+2. Clicking **Gallery** button opens **GalleryActivity**.
+
+#### **Implementation**
+
+- **Class:** `MainActivityNavigationTest.java`
+- **Methods:**
+  - `testNavigationToQuizActivity()`
+  - `testNavigationToGalleryActivity()`
+
+#### **Test Result:** ✅ **PASSED**
+
+---
+
+### **2. Data Registration in Gallery**
+
+#### **Description**
+
+This test verifies that:
+
+1. A user can add an entry to the gallery.
+2. The entry appears in the **RecyclerView**.
+3. The entry is removed correctly when deleted.
+
+#### **Expected Result**
+
+1. Initial count of gallery items is recorded.
+2. A new entry is added with name **"Random green sweatshirt guy"** and a stubbed image.
+3. The count increases by **1**.
+4. The entry is deleted.
+5. The count returns to the original value.
+
+#### **Implementation**
+
+- **Class:** `DataRegistrationTest.java`
+- **Method:** `testAddAndDeleteEntry()`
+
+#### **Test Result:** ✅ **PASSED**
+
+---
+
+### **3. Quiz Score Update**
+
+#### **Description**
+
+This test simulates a user answering quiz questions and verifies that:
+
+1. The **score updates correctly** for correct answers.
+2. Incorrect answers do **not** increment the score.
+
+#### **Expected Result**
+
+- Correct answer increases score.
+- Wrong answer does **not** increase score.
+
+#### **Implementation**
+
+- **Class:** `QuizScoreTest.java`
+- **Method:**
+    - `testCorrectAnswerUpdatesScore()`
+    - `testIncorrectAnswerDoesNotIncrementScore()`
+
+#### **Test Result: ❌ FAILED**
+
+- **Issue:** 
+
+```shell
+java.lang.NullPointerException: Attempt to invoke virtual method 'int java.util.ArrayList.size()' on a null object reference
+at com.swampbeardev.quizapp.QuizFragment.onViewCreated(QuizFragment.java:54)
+```
+
+- **Fix:** Initialized `galleryItems` in `QuizApplication`
+
+```java
+private ArrayList<GalleryItem> galleryItems = new ArrayList<>();
+```
+
+- **Retested:** ✅ **PASSED**
+
+---
+
+## Conclusion
+
+| **Test Case**                      | **Result**       |
+| ---------------------------------- | ---------------- |
+| **Navigation to Quiz/Gallery**     | ✅ Passed         |
+| **Data Registration (Add/Delete)** | ✅ Passed         |
+| **Quiz Score Updates**             | ✅ Fixed & Passed |
+
+### **Future Improvements**
+
+- Implement **Idling Resources** to avoid using `Thread.sleep()`.
+- Improve **UI synchronization** for better Espresso test reliability.
