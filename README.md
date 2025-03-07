@@ -82,9 +82,6 @@ flowchart TD
     W --> A
 ```
 
-
-```
-
 # QuizApp - Test Documentation
 
 ## Overview
