@@ -45,43 +45,19 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         this.listener = listener;
     }
 
-    /**
-     * Adds a new gallery item to the adapter.
-     *
-     * @param item The gallery item to add.
-     */
-    public void addEntry(GalleryItem item) {
-        this.galleryItems.add(item);
-        Log.d(item.getImageName(), "addEntry: ");
-        notifyItemInserted(galleryItems.size() - 1);
-    }
-    /**
-     * Removes a gallery item from the adapter.
-     *
-     * @param item The gallery item to remove.
-     */
-    public void removeEntry(GalleryItem item) {
-        int position = galleryItems.indexOf(item);
-        if (position != -1) {
-            galleryItems.remove(position);
-            notifyItemRemoved(position);
-        }
+    public void setGalleryItems(List<GalleryItem> galleryItems) {
+        this.galleryItems = galleryItems;
+        notifyDataSetChanged();
     }
 
     /**
-     * Sorts the gallery items in an alphabetical order
+     * Gets the list of gallery items.
+     * @return The list of gallery items.
      */
-    public void sortEntriesAZ() {
-        Collections.sort(galleryItems, Comparator.comparing(GalleryItem::getImageName));
-        notifyDataSetChanged();
+    public List<GalleryItem> getGalleryItems() {
+        return galleryItems;
     }
-    /**
-     * Sorts the gallery items in a reverse alphabetical order
-     */
-    public void sortEntriesZA() {
-        Collections.sort(galleryItems, Comparator.comparing(GalleryItem::getImageName).reversed());
-        notifyDataSetChanged();
-    }
+
     @NonNull
     @Override
     public GalleryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -98,7 +74,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     @Override
     public int getItemCount() {
-        return galleryItems.size();
+        if (galleryItems == null) {
+            return 0;
+        } else {
+            return galleryItems.size();
+        }
     }
 
     /**

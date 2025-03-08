@@ -1,35 +1,36 @@
 package com.swampbeardev.quizapp;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import android.app.Application;
 import android.os.Handler;
-import java.util.ArrayList;
+
+import java.util.List;
 import java.util.Random;
 
 public class QuizActivityViewModel extends ViewModel {
 
-    private QuizApplication app;
-    private ArrayList<GalleryItem> galleryItems;
+    private LiveData<List<GalleryItem>> galleryItems;
 
     private final MutableLiveData<GalleryItem> currentItem = new MutableLiveData<>();
     private final MutableLiveData<String> correctAnswer = new MutableLiveData<>();
     private final MutableLiveData<Integer> score = new MutableLiveData<>(0);
     private final MutableLiveData<Integer> questionNumber = new MutableLiveData<>(0);
 
+    private final MutableLiveData<List<String>> currentOptions = new MutableLiveData<>();
+
     private final Random random = new Random();
     private final Handler handler = new Handler();
 
-    public void setApp(QuizApplication app) {
-        this.app = app;
-        this.galleryItems = app.getGalleryItems();
+    public void setApp(@NonNull  Application app) {
+        GalleryItemRepository repository = new GalleryItemRepository(app);
+        this.galleryItems = repository.getAllGalleryItems();
     }
 
-    public QuizApplication getApp() {
-        return app;
-    }
-
-    public ArrayList<GalleryItem> getGalleryItems() {
+    public LiveData<List<GalleryItem>> getGalleryItems() {
         return galleryItems;
     }
 
@@ -75,5 +76,11 @@ public class QuizActivityViewModel extends ViewModel {
 
     public Handler getHandler() {
         return handler;
+    }
+    public LiveData<List<String>> getCurrentOptions() {
+        return currentOptions;
+    }
+    public void setCurrentOptions(List<String> options) {
+        currentOptions.setValue(options);
     }
 }

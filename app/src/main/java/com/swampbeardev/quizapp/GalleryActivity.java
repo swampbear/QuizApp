@@ -1,37 +1,41 @@
-package com.swampbeardev.quizapp;
 
-import android.net.Uri;
+        package com.swampbeardev.quizapp;
+
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 
-/**
- * Activity for the gallery screen.
- */
 public class GalleryActivity extends AppCompatActivity {
 
     private GalleryAdapter adapter;
-    private QuizApplication app;
-
+    private GalleryViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
-        app = (QuizApplication) getApplication();
+
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new GalleryAdapter(app.getGalleryItems());
-        adapter.setOnClickListener(position -> {
-            GalleryItem item = app.getGalleryItems().get(position);
-            app.removeGalleryItem(item);
-            adapter.notifyItemRemoved(position);
-        });
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // 2 columns
+        adapter = new GalleryAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
+        // Get the ViewModel and observe changes to the gallery items
+        viewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
+        viewModel.getGalleryItems().observe(this, galleryItems -> {
+            adapter.setGalleryItems(galleryItems);
+            adapter.notifyDataSetChanged();
+        });
+
+        // Delegate deletion to the ViewModel
+        adapter.setOnClickListener(position -> {
+            GalleryItem item = adapter.getGalleryItems().get(position);
+            viewModel.removeGalleryItem(item);
+        });
 
     }
 
@@ -40,21 +44,21 @@ public class GalleryActivity extends AppCompatActivity {
      * @param view The view that was clicked.
      */
     public void onClick(View view) {
-        if (view.getId() == R.id.addEntryButton) {
-            AddEntryBottomSheet bottomSheet = new AddEntryBottomSheet(adapter);
+        int id = view.getId();
+        if (id == R.id.addEntryButton) {
+            // The BottomSheet can now obtain the ViewModel via the Activity if needed.
+            AddEntryBottomSheet bottomSheet = new AddEntryBottomSheet();
             bottomSheet.show(getSupportFragmentManager(), "AddEntryBottomSheet");
-        }
-        if(view.getId() == R.id.backButton){
+        } else if (id == R.id.backButton) {
             finish();
+        } else if (id == R.id.ZAsortButton) {
+            viewModel.sortEntriesZA();
+        } else if (id == R.id.AZsortButton) {
+            viewModel.sortEntriesAZ();
         }
-        if (view.getId() == R.id.ZAsortButton) {
-            adapter.sortEntriesZA();
-        }
-        if (view.getId() == R.id.AZsortButton) {
-            adapter.sortEntriesAZ();
-        }
-
-
     }
 }
+
+
+
 
