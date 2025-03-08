@@ -5,50 +5,73 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
-
+import androidx.lifecycle.Observer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class GalleryViewModel extends AndroidViewModel {
 
-    private final LiveData<List<GalleryItem>> galleryItems;
-
-
     private final GalleryItemRepository repository;
+    private final LiveData<List<GalleryItem>> galleryItems;  // Unsorted data from Room
+    private final MutableLiveData<List<GalleryItem>> sortedGalleryItems = new MutableLiveData<>();
 
     public GalleryViewModel(@NonNull Application application) {
         super(application);
-
-        // Initialize LiveData from the application's current list
         repository = new GalleryItemRepository(application);
-        galleryItems = (repository.getAllGalleryItems());
+        galleryItems = repository.getAllGalleryItems();
+
+        // Whenever the repository's LiveData updates, sort it by default (AZ)
+        galleryItems.observeForever(new Observer<List<GalleryItem>>() {
+            @Override
+            public void onChanged(List<GalleryItem> items) {
+                if (items != null) {
+                    List<GalleryItem> sortedList = new ArrayList<>(items);
+                    Collections.sort(sortedList, Comparator.comparing(GalleryItem::getImageName));
+                    sortedGalleryItems.setValue(sortedList);
+                }
+            }
+        });
     }
 
+    // Expose the sorted list to the UI
     public LiveData<List<GalleryItem>> getGalleryItems() {
-        return galleryItems;
+        return sortedGalleryItems;
+    }
+
+    // Void function to sort in ascending order (AZ)
+    public void sortEntriesAZ() {
+        List<GalleryItem> currentList = galleryItems.getValue();
+        if (currentList != null) {
+            List<GalleryItem> sortedList = new ArrayList<>(currentList);
+            Collections.sort(sortedList, Comparator.comparing(GalleryItem::getImageName));
+            sortedGalleryItems.setValue(sortedList);
+        }
+    }
+
+    // Void function to sort in descending order (ZA)
+    public void sortEntriesZA() {
+        List<GalleryItem> currentList = galleryItems.getValue();
+        if (currentList != null) {
+            List<GalleryItem> sortedList = new ArrayList<>(currentList);
+            Collections.sort(sortedList, Comparator.comparing(GalleryItem::getImageName).reversed());
+            sortedGalleryItems.setValue(sortedList);
+        }
     }
 
     public void removeGalleryItem(GalleryItem item) {
         repository.delete(item);
     }
 
-    public void sortEntriesAZ() {
-        //Transformations.map(galleryItems, galleryItems1 -> galleryItems1.sort(Comparator.comparing(GalleryItem::getImageName).thenComparing(GalleryItem::getImageName)));
-    }
-
-    public void sortEntriesZA() {
-      /**  List<GalleryItem> items = new ArrayList<>(app.getGalleryItems());
-        Collections.sort(items, Comparator.comparing(GalleryItem::getImageName).reversed());
-        app.setGalleryItems(new ArrayList<>(items));
-        galleryItems.setValue(items);**/
-    }
-
     public void insert(GalleryItem newItem) {
         repository.insert(newItem);
     }
-}
 
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        // Optionally remove the forever observer to avoid leaks:
+        galleryItems.removeObserver(items -> {});
+    }
+}
