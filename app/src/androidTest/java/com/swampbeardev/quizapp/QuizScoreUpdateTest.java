@@ -29,7 +29,7 @@ public class QuizScoreUpdateTest {
     public void setup(){
         activityRule.getScenario().onActivity(activity -> {
             viewModel = new QuizActivityViewModel();
-            viewModel.setApp((QuizApplication) activity.getApplication());
+            viewModel.setApp(activity.getApplication());
         });
     }
 

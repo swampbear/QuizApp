@@ -102,7 +102,12 @@ public class QuizFragment extends Fragment {
         option3.setVisibility(View.INVISIBLE);
         imageView.setVisibility(View.INVISIBLE);
         scoreText.setVisibility(View.INVISIBLE);
-        viewModel.getHandler().postDelayed(() -> requireActivity().finish(), 2500);
+        viewModel.getHandler().postDelayed(() -> {
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
+        }, 2500);
+
     }
 
     /**
@@ -151,11 +156,11 @@ public class QuizFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     private void evaluateAnswer(String selectedOption) {
         if (Objects.equals(selectedOption, viewModel.getCorrectAnswer().getValue())) {
-            feedbackText.setText("Riktig!");
+            feedbackText.setText("Correct!");
             feedbackText.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.correctBackground));
             viewModel.incrementScore();
         } else {
-            feedbackText.setText("Feil.. Rett svar var: " + viewModel.getCorrectAnswer().getValue());
+            feedbackText.setText("Wrong... the correct answer was: " + viewModel.getCorrectAnswer().getValue());
             feedbackText.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.incorrectBackground));
         }
         viewModel.incrementQuestionNumber();
@@ -169,7 +174,7 @@ public class QuizFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void updateScoreText() {
-        scoreText.setText("Resultat: " + viewModel.getScore().getValue() + "/" + viewModel.getQuestionNumber().getValue());
+        scoreText.setText("Score: " + viewModel.getScore().getValue() + "/" + viewModel.getQuestionNumber().getValue());
     }
 
     private void disableButtons() {
