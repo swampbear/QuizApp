@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    implementation("io.coil-kt:coil:2.4.0")
+    implementation(libs.coil)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -46,5 +46,15 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
 
+
+    androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.espresso.contrib)
+    androidTestImplementation(libs.runner)
+    androidTestImplementation(libs.rules)
+
+    androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.espresso.contrib)
+    androidTestImplementation(libs.runner)
+    androidTestImplementation(libs.rules)
 
 }

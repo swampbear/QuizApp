@@ -10,7 +10,7 @@ import java.util.List;
  * Keeps track of the gallery items across activities.
  */
 public class QuizApplication extends Application {
-    private ArrayList<GalleryItem> galleryItems;
+    private ArrayList<GalleryItem> galleryItems = new ArrayList<>();
 
     public ArrayList<GalleryItem> getGalleryItems() {
         return galleryItems;
