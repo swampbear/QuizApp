@@ -51,4 +51,10 @@ dependencies {
     androidTestImplementation(libs.espresso.contrib)
     androidTestImplementation(libs.runner)
     androidTestImplementation(libs.rules)
+
+    androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.espresso.contrib)
+    androidTestImplementation(libs.runner)
+    androidTestImplementation(libs.rules)
+
 }
