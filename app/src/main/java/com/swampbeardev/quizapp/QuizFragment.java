@@ -90,8 +90,6 @@ public class QuizFragment extends Fragment {
             // You can update question-related UI here if needed.
         });
 
-        loadNewQuestion();
-
         endQuiz.setOnClickListener(v -> requireActivity().finish());
     }
 
