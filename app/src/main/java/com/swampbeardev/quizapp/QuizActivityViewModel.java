@@ -20,6 +20,8 @@ public class QuizActivityViewModel extends ViewModel {
     private final MutableLiveData<Integer> score = new MutableLiveData<>(0);
     private final MutableLiveData<Integer> questionNumber = new MutableLiveData<>(0);
 
+    private final MutableLiveData<List<String>> currentOptions = new MutableLiveData<>();
+
     private final Random random = new Random();
     private final Handler handler = new Handler();
 
@@ -74,5 +76,11 @@ public class QuizActivityViewModel extends ViewModel {
 
     public Handler getHandler() {
         return handler;
+    }
+    public LiveData<List<String>> getCurrentOptions() {
+        return currentOptions;
+    }
+    public void setCurrentOptions(List<String> options) {
+        currentOptions.setValue(options);
     }
 }

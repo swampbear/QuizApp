@@ -63,7 +63,10 @@ public class QuizFragment extends Fragment {
                 if (galleryItems == null || galleryItems.size() < 3) {
                     displayTooFewEntries();
                 } else {
-                    loadNewQuestion();
+                    if(viewModel.getCurrentItem().getValue() == null){
+                        loadNewQuestion();
+                    }
+
                 }
             }
         });
@@ -73,6 +76,14 @@ public class QuizFragment extends Fragment {
                 imageView.setImageURI(item.getImageUri());
             }
         });
+        viewModel.getCurrentOptions().observe(getViewLifecycleOwner(), options -> {
+            if(options != null && options.size() == 3) {
+                option1.setText(options.get(0));
+                option2.setText(options.get(1));
+                option3.setText(options.get(2));
+            }
+        });
+
 
         viewModel.getScore().observe(getViewLifecycleOwner(), score -> updateScoreText());
         viewModel.getQuestionNumber().observe(getViewLifecycleOwner(), questionNum -> {
@@ -124,6 +135,7 @@ public class QuizFragment extends Fragment {
             }
         }
         Collections.shuffle(options);
+        viewModel.setCurrentOptions(options);
 
         option1.setText(options.get(0));
         option2.setText(options.get(1));
