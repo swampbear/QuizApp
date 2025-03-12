@@ -81,6 +81,9 @@ public class QuizFragment extends Fragment {
                 option1.setText(options.get(0));
                 option2.setText(options.get(1));
                 option3.setText(options.get(2));
+                setOptionClickListener(option1);
+                setOptionClickListener(option2);
+                setOptionClickListener(option3);
             }
         });
 
